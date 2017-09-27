@@ -25,10 +25,20 @@ android {
         }
     }
 
+
+    dataBinding {
+        enabled =true
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 }
+
+kapt {
+    generateStubs = true
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -43,6 +53,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "org.jetbrains.anko:anko:$anko_version"
     compile "com.google.code.gson:gson:2.4"
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.28'
+    compile 'com.android.support:recyclerview-v7:26.0.2'
 }
 repositories {
     mavenCentral()

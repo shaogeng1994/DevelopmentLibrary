@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -22,11 +23,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 open class LoginActivity: AppCompatActivity() {
 
     var loadingDialog: Dialog? = null
-    val volleyFactory = TestVolleyFactory().getVolleyRequest(applicationContext)
+    lateinit var volleyRequest : VolleyRequest
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        volleyRequest = TestVolleyFactory().getVolleyRequest(applicationContext)
         setContentView(R.layout.activity_main)
 
         login_login.setOnClickListener({
@@ -53,12 +55,13 @@ open class LoginActivity: AppCompatActivity() {
 
         setLoading(true)
         LoginReq(account, password).let {
-            volleyFactory.doRequest(it, User::class.java, object : ApiCallback<User>{
+            volleyRequest.doRequest(it, User::class.java, object : ApiCallback<User>{
                 override fun callback(apiResponse: ApiResponse<User>) {
                     setLoading(false)
                     if (apiResponse.isSuccess()) {
                         showToast("登录成功")
                         showToast("欢迎${apiResponse.data?.nickName?:""}!")
+                        startActivity(Intent(applicationContext, HomeActivity::class.java))
                     } else {
                         showToast(apiResponse.msg)
                     }
@@ -87,7 +90,7 @@ open class LoginActivity: AppCompatActivity() {
             loadingDialog = Dialog(this).apply {
                 setContentView(ProgressBar(applicationContext))
                 setOnCancelListener {
-                    volleyFactory.removeRequest(this@LoginActivity.javaClass.simpleName)
+                    volleyRequest.removeRequest(this@LoginActivity.javaClass.simpleName)
                 }
             }
             loadingDialog?.show()
