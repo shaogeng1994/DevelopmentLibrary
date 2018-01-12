@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="eiDefTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#222222</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="eiDefRightText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#999999</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <declare-styleable name="EasyItem">
+        <attr name="ei_padding_left" format="dimension" />
+        <attr name="ei_padding_right" format="dimension" />
+        <attr name="ei_title_style" format="reference" />
+        <attr name="ei_title_text" format="string" />
+        <attr name="ei_background_color" format="color" />
+        <attr name="ei_background" format="reference" />
+        <attr name="ei_left_icon_src" format="reference" />
+        <attr name="ei_right_text_style" format="reference" />
+        <attr name="ei_right_text" format="string" />
+        <attr name="ei_right_icon_src" format="reference" />
+        <attr name="ei_bottom_line" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="TearableLayout">
+        <attr name="tl_margin" format="dimension" />
+        <attr name="tl_corner" format="dimension" />
+        <attr name="tl_background_color" format="color" />
+    </declare-styleable>
+</resources>

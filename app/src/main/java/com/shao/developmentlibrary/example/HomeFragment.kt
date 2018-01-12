@@ -11,12 +11,12 @@ import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.shao.developmentlibrary.adapter.MultipleItemAdapter
+import com.shao.developmentlibrary.adapter.SimpleMultiItemAdapter
+import com.shao.developmentlibrary.adapter.base.BaseMultiItemAdapter
+import com.shao.developmentlibrary.adapter.base.DataBindingAdapter
 import com.shao.developmentlibrary.example.databinding.FragHomeBinding
 
 /**
@@ -25,6 +25,10 @@ import com.shao.developmentlibrary.example.databinding.FragHomeBinding
 open class HomeFragment: Fragment() {
     lateinit var binding: FragHomeBinding
 
+    val mAdapter = SimpleMultiItemAdapter<BaseMultiItemAdapter.MultiItemEntity>().apply {
+        addItemType(1, R.layout.item_home1, BR.item_home1_viewmodel)
+        addItemType(2, R.layout.item_home2, BR.item_home2_viewmodel)
+    }
 
 
 
@@ -32,36 +36,17 @@ open class HomeFragment: Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.frag_home, container, false)
         binding.fragHomeViewmodel = HomeViewModel()
 
-        binding.homeRecycler.adapter = Adapter(ArrayList(0))
+        binding.homeRecycler.adapter = mAdapter
         binding.homeRecycler.layoutManager = LinearLayoutManager(context)
 
         return binding.root
     }
 
-
-    class Adapter(data: List<MultipleItemAdapter.MultipleItem<Any>>): MultipleItemAdapter(data) {
-
-
-
-        override fun onConvert(commonViewHolder: CommonViewHolder, t: MultipleItem<Any>) {
-            when (commonViewHolder.itemViewType) {
-                1 -> commonViewHolder.viewDataBinding?.setVariable(BR.item_home1_viewmodel, Item1ViewModel())
-                2 -> commonViewHolder.viewDataBinding?.setVariable(BR.item_home2_viewmodel, Item2ViewModel())
-            }
-        }
-
-
-    }
-
-    class Item1: MultipleItemAdapter.MultipleItem<String>(1, "a", R.layout.item_home1)
-    class Item2: MultipleItemAdapter.MultipleItem<Int>(2, 1, R.layout.item_home2)
-
-
     companion object {
         @BindingAdapter("bind:common_adapter_items")
         @JvmStatic
-        fun setItems(recyclerView: RecyclerView, items: ArrayList<Any>) {
-            val adapter = recyclerView.adapter as BaseQuickAdapter<Any, *>
+        fun setItems(recyclerView: RecyclerView, items: List<Any>) {
+            val adapter = recyclerView.adapter as DataBindingAdapter<Any, *>
             adapter.setNewData(items)
         }
     }
@@ -69,7 +54,7 @@ open class HomeFragment: Fragment() {
 
 
 class HomeViewModel: BaseObservable() {
-    val data: ObservableArrayList<Any> = ObservableArrayList()
+    val data: ObservableArrayList<BaseMultiItemAdapter.MultiItemEntity> = ObservableArrayList()
 
 
     val mHandler: Handler = @SuppressLint("HandlerLeak")
@@ -78,56 +63,57 @@ class HomeViewModel: BaseObservable() {
             when(msg?.what) {
                 1 -> {
                     data.clear()
-                    data.add(HomeFragment.Item1())
-                    data.add(HomeFragment.Item1())
-                    data.add(HomeFragment.Item1())
-                    data.add(HomeFragment.Item1())
-                    data.add(HomeFragment.Item2())
-                    data.add(HomeFragment.Item2())
-                    data.add(HomeFragment.Item2())
-                    data.add(HomeFragment.Item2())
+                    data.add(Item1ViewModel())
+                    data.add(Item1ViewModel())
+                    data.add(Item1ViewModel())
+                    data.add(Item1ViewModel())
+                    data.add(Item2ViewModel())
+                    data.add(Item2ViewModel())
+                    data.add(Item2ViewModel())
+                    data.add(Item2ViewModel())
                 }
             }
         }
     }
 
     init {
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item2())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
-        data.add(HomeFragment.Item1())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item2ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
+        data.add(Item1ViewModel())
 //        mHandler.sendEmptyMessageDelayed(1, 3000)
     }
 
 }
 
-class Item2ViewModel: BaseObservable() {
+class Item2ViewModel: BaseObservable(), BaseMultiItemAdapter.MultiItemEntity {
 
+
+    override val itemType: Int
+        get() = 2
 }
 
-class Item1ViewModel: BaseObservable() {
+class Item1ViewModel: BaseObservable(), BaseMultiItemAdapter.MultiItemEntity {
 
+    override val itemType: Int
+        get() = 1
 }

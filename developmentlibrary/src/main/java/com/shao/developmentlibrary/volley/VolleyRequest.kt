@@ -9,7 +9,7 @@ import com.shao.developmentlibrary.api.BaseRequest
 /**
  * Created by Administrator on 2017/9/13.
  */
-open abstract class VolleyRequest(context: Context) {
+abstract class VolleyRequest(context: Context) {
 
 
     companion object {
